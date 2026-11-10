@@ -16,7 +16,7 @@ Package meals are read from a notepad file, and every order is saved to a transa
 | Member | Role | GitHub |
 | --- | --- | --- |
 | Ian Patrick A. Flores | Repository Owner, Team Lead, Backend | [Muj-csv](https://github.com/Muj-csv) |
-| Mary Princess Angel L. Dizon | UI/UX | [mpadzn](https://github.com/mpadzn) |
+| Mary Princess Angel L. Dizon | UI/UX | [mpadizon](https://github.com/mpadizon) |
 | Joey T. Cuison | Frontend | [joeycuison333-stack](https://github.com/joeycuison333-stack) |
 
 ## 3. Exam requirements

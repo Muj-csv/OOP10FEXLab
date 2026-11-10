@@ -9,7 +9,7 @@ See [PRD.md](PRD.md) for the requirements and [members.txt](members.txt) for the
 | Member | Role | GitHub |
 | --- | --- | --- |
 | Ian Patrick A. Flores | Repository Owner, Team Lead, Backend | [@Muj-csv](https://github.com/Muj-csv) |
-| Mary Princess Angel L. Dizon | UI/UX | [@mpadzn](https://github.com/mpadzn) |
+| Mary Princess Angel L. Dizon | UI/UX | [@mpadizon](https://github.com/mpadizon) |
 | Joey T. Cuison | Frontend | [@joeycuison333-stack](https://github.com/joeycuison333-stack) |
 
 ## Getting started
