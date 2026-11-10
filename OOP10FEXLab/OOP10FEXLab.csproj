@@ -106,7 +106,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="UI\ReceiptForm.cs">
-      <SubType>Code</SubType>
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\ReceiptForm.Designer.cs">
+      <DependentUpon>ReceiptForm.cs</DependentUpon>
     </Compile>
     <Compile Include="UI\QueueMonitorForm.cs">
       <SubType>Code</SubType>
