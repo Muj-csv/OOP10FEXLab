@@ -2,20 +2,85 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
+using System.Linq;
+using MySql.Data.MySqlClient;
 using OOP10FEXLab.Models;
 
 namespace OOP10FEXLab.Data
 {
     /// <summary>
-    /// Reads the package meals from Data\meals.txt.
-    /// Line format: Code|Category|Name|Price|Inclusions
-    /// (Replace this class's code with the professor's database code to load from a database instead.)
+    /// Loads the package meals.
+    /// 1. From the instructor's database: SELECT package_name FROM package_tbl (the provided sample query).
+    ///    package_tbl only has the package name, so the code, category, price and inclusions of each
+    ///    package are taken from Data\meals.txt by matching the name.
+    /// 2. If the database cannot be reached (or has none of our packages), from Data\meals.txt only.
+    /// meals.txt line format: Code|Category|Name|Price|Inclusions
     /// </summary>
     public class MealRepository
     {
         private readonly string filePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Data", "meals.txt");
+        private readonly DatabaseConnection database = DatabaseConnection.CreateDefault();
+
+        /// <summary>Where the last GetAll() loaded the menu from: "database" or "meals.txt".</summary>
+        public string Source { get; private set; }
 
         public List<Meal> GetAll()
+        {
+            List<Meal> fileMeals = File.Exists(filePath) ? ReadFile() : new List<Meal>();
+
+            try
+            {
+                List<string> names = ReadPackageNames();
+
+                // Keep the database's packages, in the database's order, using the details from meals.txt.
+                List<Meal> meals = new List<Meal>();
+                foreach (string name in names)
+                {
+                    Meal meal = fileMeals.FirstOrDefault(m => string.Equals(m.Name, name, StringComparison.OrdinalIgnoreCase));
+                    if (meal != null && !meals.Contains(meal)) meals.Add(meal);
+                }
+
+                if (meals.Count > 0)
+                {
+                    Source = "database";
+                    return meals;
+                }
+            }
+            catch (Exception)
+            {
+                // Database not reachable (wrong network, server off, MySql.Data missing): use meals.txt below.
+            }
+
+            if (!File.Exists(filePath))
+                throw new FileNotFoundException("The database could not be reached and meals.txt was not found.", filePath);
+
+            Source = "meals.txt";
+            return fileMeals;
+        }
+
+        // ---- Instructor's sample query: fill the list from package_tbl ----
+        private List<string> ReadPackageNames()
+        {
+            List<string> names = new List<string>();
+
+            using (MySqlConnection conn = database.CreateConnection())
+            {
+                conn.Open();
+                string sql = "SELECT package_name FROM package_tbl";
+                using (MySqlCommand cmd = new MySqlCommand(sql, conn))
+                using (MySqlDataReader reader = cmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        names.Add(reader.GetString("package_name").Trim());
+                    }
+                }
+            }
+
+            return names;
+        }
+
+        private List<Meal> ReadFile()
         {
             List<Meal> meals = new List<Meal>();
 
