@@ -21,7 +21,7 @@ See [PRD.md](PRD.md) for the requirements and [members.txt](members.txt) for the
    git clone https://github.com/Muj-csv/OOP10FEXLab.git
    ```
 2. Open `OOP10FEXLab.sln` in Visual Studio.
-3. Press **F5**. The **Queue Monitor** and the **Kiosk** open together.
+3. Press **F5**. Visual Studio downloads the **MySql.Data** NuGet package on the first build, then the **Queue Monitor** and the **Kiosk** open together.
 
 ## How to use
 
@@ -50,4 +50,7 @@ OOP10FEXLab/
 - **Menu:** edit `Data/meals.txt` — `Code|Category|Name|Price|Inclusions`.
 - **Transaction record:** `bin/Debug/Data/transactions.txt`, created on the first order.
 - **Store name and colors:** `UI/Theme.cs` (store name **AnDokiDoks**, red and yellow theme).
-- **Database:** put the instructor's connection/query code inside `MealRepository` and `TransactionRepository`.
+- **Database:** the instructor's MySQL server (`Data/DatabaseConnection.cs`, `172.16.24.11`, database `fastfoodDB`).
+  - **Menu:** `SELECT package_name FROM package_tbl`. The Kiosk shows the packages found there, with their price, category and inclusions taken from `meals.txt` (same name). The Kiosk title shows `menu: database` or `menu: meals.txt`.
+  - **Orders:** **Place Order** inserts one row per meal into `transactions_tbl (package_name, transaction_date)`.
+  - **No connection** (for example at home): after 3 seconds the menu comes from `meals.txt`, and orders still save to `transactions.txt` with a warning.
