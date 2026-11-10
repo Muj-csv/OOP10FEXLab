@@ -148,6 +148,8 @@ namespace OOP10FEXLab.UI
             try
             {
                 meals = mealRepository.GetAll();
+                // Shows in the title bar whether the menu came from the instructor's database or from meals.txt.
+                Text = "Kiosk - " + Theme.StoreName + "  (menu: " + mealRepository.Source + ")";
             }
             catch (Exception ex)
             {
@@ -280,6 +282,16 @@ namespace OOP10FEXLab.UI
             {
                 MessageBox.Show("The order could not be saved.\n\n" + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
+            }
+
+            try
+            {
+                transactionRepository.SaveToDatabase(order);   // instructor's database (transactions_tbl)
+            }
+            catch (Exception ex)
+            {
+                // The order is still placed and shows on the Queue Monitor; only the database copy failed.
+                MessageBox.Show("Order saved, but not to the database.\n\n" + ex.Message, "Database", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
 
             using (ReceiptForm receipt = new ReceiptForm(order))

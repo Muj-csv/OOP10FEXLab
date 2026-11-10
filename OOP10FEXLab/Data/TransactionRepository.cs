@@ -3,14 +3,17 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using MySql.Data.MySqlClient;
 using OOP10FEXLab.Models;
 
 namespace OOP10FEXLab.Data
 {
     /// <summary>
-    /// Saves every order to Data\transactions.txt (the transaction record).
-    /// Line format: OrderNo|DateTime|DiningOption|Status|Total|Items
-    /// Items      : CODE^NAME^PRICE^QTY, separated by '~'
+    /// Saves every order to the transaction record:
+    /// - Data\transactions.txt: order number, status, items. The Queue Monitor reads this file.
+    ///   Line format: OrderNo|DateTime|DiningOption|Status|Total|Items
+    ///   Items      : CODE^NAME^PRICE^QTY, separated by '~'
+    /// - The instructor's database (transactions_tbl), using the provided sample insert.
     /// </summary>
     public class TransactionRepository
     {
@@ -18,6 +21,7 @@ namespace OOP10FEXLab.Data
         private const string DateFormat = "yyyy-MM-dd HH:mm:ss";
 
         private readonly string filePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Data", "transactions.txt");
+        private readonly DatabaseConnection database = DatabaseConnection.CreateDefault();
 
         public void Save(Order order)
         {
@@ -25,6 +29,39 @@ namespace OOP10FEXLab.Data
                 File.WriteAllText(filePath, Header + Environment.NewLine);
 
             File.AppendAllText(filePath, ToLine(order) + Environment.NewLine);
+        }
+
+        /// <summary>
+        /// Instructor's sample insert: one row in transactions_tbl per meal ordered
+        /// (2 x 1pc Chicken Meal = 2 rows). All rows are saved, or none.
+        /// </summary>
+        public void SaveToDatabase(Order order)
+        {
+            using (MySqlConnection conn = database.CreateConnection())
+            {
+                conn.Open();
+                using (MySqlTransaction tran = conn.BeginTransaction())
+                {
+                    string sql = "INSERT INTO transactions_tbl " +
+                                 "(package_name, transaction_date) " +
+                                 "VALUES (@pkg, @date)";
+
+                    foreach (OrderItem item in order.Items)
+                    {
+                        for (int i = 0; i < item.Quantity; i++)
+                        {
+                            using (MySqlCommand cmd = new MySqlCommand(sql, conn, tran))
+                            {
+                                cmd.Parameters.AddWithValue("@pkg", item.Name);
+                                cmd.Parameters.AddWithValue("@date", order.OrderDate);
+                                cmd.ExecuteNonQuery();
+                            }
+                        }
+                    }
+
+                    tran.Commit();   // all rows saved, or none
+                }
+            }
         }
 
         public void UpdateStatus(int orderNumber, OrderStatus status)
