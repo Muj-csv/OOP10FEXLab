@@ -9,7 +9,7 @@ Group Members:
 
 2. Mary Princess Angel L. Dizon
    Role   : UI/UX
-   GitHub : https://github.com/mpadzn
+   GitHub : https://github.com/mpadizon
 
 3. Joey T. Cuison
    Role   : Frontend
