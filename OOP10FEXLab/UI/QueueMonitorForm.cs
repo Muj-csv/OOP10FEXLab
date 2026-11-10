@@ -9,7 +9,7 @@ using OOP10FEXLab.Models;
 namespace OOP10FEXLab.UI
 {
     /// <summary>
-    /// Claim monitor: PREPARING | NOW SERVING | store name.
+    /// Queue monitor: PREPARING | NOW SERVING | store name.
     /// Reads today's orders from the transaction record every 2 seconds.
     /// Crew clicks a number to move it: Preparing -> Now Serving -> Claimed.
     /// </summary>
@@ -24,7 +24,7 @@ namespace OOP10FEXLab.UI
 
         public QueueMonitorForm()
         {
-            Text = "Claim Monitor - " + Theme.StoreName;
+            Text = "Queue Monitor - " + Theme.StoreName;
             Size = new Size(1200, 680);
             StartPosition = FormStartPosition.Manual;
             Location = new Point(20, 20);
@@ -41,7 +41,7 @@ namespace OOP10FEXLab.UI
         {
             Label title = new Label
             {
-                Text = "CLAIM MONITOR",
+                Text = "QUEUE MONITOR",
                 Dock = DockStyle.Top,
                 Height = 60,
                 Font = Theme.Font(24f, FontStyle.Bold),
