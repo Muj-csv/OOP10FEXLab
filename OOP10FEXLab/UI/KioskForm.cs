@@ -11,8 +11,11 @@ namespace OOP10FEXLab.UI
 {
     /// <summary>
     /// Self-order kiosk: Dine In / Take Out -> pick meals -> Review &amp; Pay -> order number.
+    /// The fixed layout (header, footer, panels, buttons, welcome screen) is in KioskForm.Designer.cs,
+    /// so it can be edited in the Visual Studio Designer. The meal cards, category buttons and
+    /// order rows come from the data, so they are created in code below.
     /// </summary>
-    public class KioskForm : Form
+    public partial class KioskForm : Form
     {
         private const string AllMeals = "All Meals";
 
@@ -24,121 +27,42 @@ namespace OOP10FEXLab.UI
         private List<Meal> meals = new List<Meal>();
         private DiningOption dining = DiningOption.DineIn;
 
-        private Panel welcomePanel;
-        private FlowLayoutPanel categoryPanel;
-        private FlowLayoutPanel mealPanel;
-        private FlowLayoutPanel orderPanel;
-        private Label diningLabel;
-        private Label totalLabel;
-        private Button payButton;
-
         public KioskForm()
         {
-            Text = "Kiosk - " + Theme.StoreName;
-            Size = new Size(1280, 800);
-            StartPosition = FormStartPosition.CenterScreen;
-            BackColor = Theme.Cream;
-            ForeColor = Theme.Text;
-            Font = Theme.Font(10f);
+            InitializeComponent();
 
-            BuildLayout();
-            BuildWelcomeScreen();
+            Text = "Kiosk - " + Theme.StoreName;
+            welcomePanel.BringToFront();   // start on the Dine In / Take Out screen
 
             cart.Changed += (s, e) => ShowOrder();
-            Load += (s, e) => LoadMeals();
         }
 
-        // ---------------------------------------------------------------- layout
+        // ---------------------------------------------------------------- designer events
 
-        private void BuildLayout()
+        private void KioskForm_Load(object sender, EventArgs e)
         {
-            // Header: red band with the store name in yellow, and a thin yellow stripe under it
-            Panel header = new Panel { Dock = DockStyle.Top, Height = 76, BackColor = Theme.Red };
-            header.Controls.Add(new Label { Text = Theme.StoreName, Font = Theme.BrandFont(26f), ForeColor = Theme.Yellow, AutoSize = true, Location = new Point(22, 12), UseMnemonic = false });
-            diningLabel = new Label { Dock = DockStyle.Right, Width = 220, Font = Theme.Font(14f, FontStyle.Bold), ForeColor = Color.White, TextAlign = ContentAlignment.MiddleCenter };
-            header.Controls.Add(diningLabel);
-            Panel headerStripe = new Panel { Dock = DockStyle.Top, Height = 6, BackColor = Theme.Yellow };
-
-            // Footer: Cancel Order | Order Total | Review & Pay
-            Panel footer = new Panel { Dock = DockStyle.Bottom, Height = 78, BackColor = Color.White, Padding = new Padding(14, 12, 14, 12) };
-            Button cancelButton = Theme.MakeButton("CANCEL ORDER", Color.White, Theme.Red);
-            cancelButton.Dock = DockStyle.Left;
-            cancelButton.Width = 190;
-            cancelButton.Click += (s, e) => CancelOrder();
-
-            payButton = Theme.MakeButton("REVIEW & PAY  ›", Theme.Red, Color.White, 14f);
-            payButton.Dock = DockStyle.Right;
-            payButton.Width = 260;
-            payButton.Click += (s, e) => ReviewAndPay();
-
-            totalLabel = new Label { Dock = DockStyle.Fill, Font = Theme.Font(17f, FontStyle.Bold), ForeColor = Theme.Text, TextAlign = ContentAlignment.MiddleRight, Padding = new Padding(0, 0, 22, 0) };
-            footer.Controls.Add(totalLabel);
-            footer.Controls.Add(cancelButton);
-            footer.Controls.Add(payButton);
-            Panel footerStripe = new Panel { Dock = DockStyle.Bottom, Height = 4, BackColor = Theme.Yellow };
-
-            // Left: categories
-            categoryPanel = new FlowLayoutPanel { Dock = DockStyle.Left, Width = 190, BackColor = Color.White, FlowDirection = FlowDirection.TopDown, WrapContents = false, Padding = new Padding(12) };
-
-            // Right: My Order
-            Panel orderBox = new Panel { Dock = DockStyle.Right, Width = 330, BackColor = Color.White, Padding = new Padding(14) };
-            orderPanel = new FlowLayoutPanel { Dock = DockStyle.Fill, FlowDirection = FlowDirection.TopDown, WrapContents = false, AutoScroll = true };
-            orderBox.Controls.Add(orderPanel);
-            orderBox.Controls.Add(new Label { Text = "MY ORDER", Dock = DockStyle.Top, Height = 40, Font = Theme.Font(15f, FontStyle.Bold), ForeColor = Theme.Red });
-
-            // Center: meal tiles on the cream background
-            mealPanel = new FlowLayoutPanel { Dock = DockStyle.Fill, AutoScroll = true, Padding = new Padding(12), BackColor = Theme.Cream };
-
-            // Docking lays out the last-added control first, so header/footer go in last.
-            Controls.Add(mealPanel);
-            Controls.Add(orderBox);
-            Controls.Add(categoryPanel);
-            Controls.Add(footerStripe);
-            Controls.Add(footer);
-            Controls.Add(headerStripe);
-            Controls.Add(header);
+            LoadMeals();
         }
 
-        private void BuildWelcomeScreen()
+        private void btnDineIn_Click(object sender, EventArgs e)
         {
-            welcomePanel = new Panel
-            {
-                Location = Point.Empty,
-                Size = ClientSize,
-                Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right,
-                BackColor = Theme.Red
-            };
+            StartOrder(DiningOption.DineIn);
+        }
 
-            // 4 rows: store name, greeting, question, the two buttons (centered)
-            TableLayoutPanel layout = new TableLayoutPanel { Dock = DockStyle.Fill, ColumnCount = 1, RowCount = 4 };
-            layout.RowStyles.Add(new RowStyle(SizeType.Percent, 40));
-            layout.RowStyles.Add(new RowStyle(SizeType.Absolute, 60));
-            layout.RowStyles.Add(new RowStyle(SizeType.Absolute, 60));
-            layout.RowStyles.Add(new RowStyle(SizeType.Percent, 60));
+        private void btnTakeOut_Click(object sender, EventArgs e)
+        {
+            StartOrder(DiningOption.TakeOut);
+        }
 
-            Label title = new Label { Text = Theme.StoreName, Font = Theme.BrandFont(60f), ForeColor = Theme.Yellow, TextAlign = ContentAlignment.BottomCenter, Dock = DockStyle.Fill, UseMnemonic = false };
-            Label hello = new Label { Text = "Hello! What would you like to order?", Font = Theme.Font(22f, FontStyle.Bold), ForeColor = Color.White, TextAlign = ContentAlignment.MiddleCenter, Dock = DockStyle.Fill };
-            Label prompt = new Label { Text = "Where will you be eating today?", Font = Theme.Font(15f), ForeColor = Theme.YellowLight, TextAlign = ContentAlignment.MiddleCenter, Dock = DockStyle.Fill };
+        private void btnCancel_Click(object sender, EventArgs e)
+        {
+            CancelOrder();
+        }
 
-            FlowLayoutPanel choices = new FlowLayoutPanel { Anchor = AnchorStyles.Top, AutoSize = true, WrapContents = false, Margin = new Padding(0, 20, 0, 0) };
-            Button dineIn = Theme.MakeButton("DINE IN", Color.White, Theme.Red, 22f);
-            Button takeOut = Theme.MakeButton("TAKE OUT", Theme.Yellow, Theme.Red, 22f);
-            dineIn.FlatAppearance.BorderColor = Color.White; // no red outline on the red screen
-            dineIn.Size = takeOut.Size = new Size(280, 130);
-            dineIn.Margin = takeOut.Margin = new Padding(20, 0, 20, 0);
-            dineIn.Click += (s, e) => StartOrder(DiningOption.DineIn);
-            takeOut.Click += (s, e) => StartOrder(DiningOption.TakeOut);
-            choices.Controls.Add(dineIn);
-            choices.Controls.Add(takeOut);
-
-            layout.Controls.Add(title, 0, 0);
-            layout.Controls.Add(hello, 0, 1);
-            layout.Controls.Add(prompt, 0, 2);
-            layout.Controls.Add(choices, 0, 3);
-            welcomePanel.Controls.Add(layout);
-
-            Controls.Add(welcomePanel);
-            welcomePanel.BringToFront();
+        // REVIEW & PAY: opens the review screen; PLACE ORDER there saves the order (file + database).
+        private void payButton_Click(object sender, EventArgs e)
+        {
+            ReviewAndPay();
         }
 
         // ---------------------------------------------------------------- menu

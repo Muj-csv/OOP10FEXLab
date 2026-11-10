@@ -100,7 +100,10 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="UI\KioskForm.cs">
-      <SubType>Code</SubType>
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\KioskForm.Designer.cs">
+      <DependentUpon>KioskForm.cs</DependentUpon>
     </Compile>
     <Compile Include="UI\CheckoutForm.cs">
       <SubType>Form</SubType>
