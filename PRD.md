@@ -84,4 +84,9 @@ Look: red and yellow fast-food theme on a cream background, store name **AnDokiD
 
 Real payments, login, menu editor, sales reports, printing.
 
-**Database note:** the instructor will provide connection and query code. To use a database, replace the code inside `MealRepository` and `TransactionRepository`; the screens do not change.
+**Database — instructor's MySQL server** (`Data\DatabaseConnection.cs`, provided connection and sample queries, MySql.Data NuGet package)
+
+- Menu: `SELECT package_name FROM package_tbl`; each package's code, category, price and inclusions come from `meals.txt` by name.
+- Orders: `INSERT INTO transactions_tbl (package_name, transaction_date)`, one row per meal, all saved in one database transaction.
+- The Queue Monitor still reads `transactions.txt`, because `transactions_tbl` has no order number or status.
+- If the server cannot be reached, the menu comes from `meals.txt` and orders are saved to `transactions.txt` only.
