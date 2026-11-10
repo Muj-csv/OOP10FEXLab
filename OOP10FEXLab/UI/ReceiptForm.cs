@@ -1,54 +1,22 @@
-﻿using System;
-using System.Drawing;
-using System.Text;
+﻿using System.Text;
 using System.Windows.Forms;
 using OOP10FEXLab.Models;
 
 namespace OOP10FEXLab.UI
 {
-    /// <summary>Shows the customer's order number and order slip.</summary>
-    public class ReceiptForm : Form
+    /// <summary>
+    /// Shows the customer's order number and order slip.
+    /// The layout is in ReceiptForm.Designer.cs; this code fills in the order.
+    /// </summary>
+    public partial class ReceiptForm : Form
     {
         public ReceiptForm(Order order)
         {
-            Text = "Thank You!";
-            Size = new Size(460, 600);
-            StartPosition = FormStartPosition.CenterParent;
-            FormBorderStyle = FormBorderStyle.FixedDialog;
-            MaximizeBox = false;
-            MinimizeBox = false;
-            BackColor = Color.White;
+            InitializeComponent();
 
-            Label caption = new Label { Text = "YOUR ORDER NUMBER", Dock = DockStyle.Top, Height = 48, Font = Theme.Font(12f, FontStyle.Bold), ForeColor = Color.White, BackColor = Theme.Red, TextAlign = ContentAlignment.BottomCenter };
-            Label number = new Label { Text = order.OrderNumber.ToString(), Dock = DockStyle.Top, Height = 120, Font = Theme.Font(58f, FontStyle.Bold), ForeColor = Theme.Yellow, BackColor = Theme.Red, TextAlign = ContentAlignment.MiddleCenter };
-            Panel stripe = new Panel { Dock = DockStyle.Top, Height = 6, BackColor = Theme.Yellow };
-
-            TextBox slip = new TextBox
-            {
-                Multiline = true,
-                ReadOnly = true,
-                TabStop = false,
-                Dock = DockStyle.Fill,
-                BorderStyle = BorderStyle.None,
-                BackColor = Theme.Cream,
-                ForeColor = Theme.Text,
-                Font = new Font("Consolas", 10f),
-                Text = BuildSlip(order)
-            };
-
-            Button done = Theme.MakeButton("DONE", Theme.Red, Color.White, 13f);
-            done.Dock = DockStyle.Bottom;
-            done.Height = 52;
-            done.DialogResult = DialogResult.OK;
-
-            Controls.Add(slip);
-            Controls.Add(done);
-            Controls.Add(stripe);
-            Controls.Add(number);
-            Controls.Add(caption);
-
-            AcceptButton = done;
-            ActiveControl = done;
+            lblNumber.Text = order.OrderNumber.ToString();
+            txtSlip.Text = BuildSlip(order);
+            ActiveControl = btnDone;
         }
 
         private static string BuildSlip(Order order)

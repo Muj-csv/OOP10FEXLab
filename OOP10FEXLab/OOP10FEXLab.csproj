@@ -100,16 +100,28 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="UI\KioskForm.cs">
-      <SubType>Code</SubType>
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\KioskForm.Designer.cs">
+      <DependentUpon>KioskForm.cs</DependentUpon>
     </Compile>
     <Compile Include="UI\CheckoutForm.cs">
-      <SubType>Code</SubType>
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\CheckoutForm.Designer.cs">
+      <DependentUpon>CheckoutForm.cs</DependentUpon>
     </Compile>
     <Compile Include="UI\ReceiptForm.cs">
-      <SubType>Code</SubType>
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\ReceiptForm.Designer.cs">
+      <DependentUpon>ReceiptForm.cs</DependentUpon>
     </Compile>
     <Compile Include="UI\QueueMonitorForm.cs">
-      <SubType>Code</SubType>
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\QueueMonitorForm.Designer.cs">
+      <DependentUpon>QueueMonitorForm.cs</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
