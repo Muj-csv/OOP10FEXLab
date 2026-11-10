@@ -87,6 +87,6 @@ Real payments, login, menu editor, sales reports, printing.
 **Database — instructor's MySQL server** (`Data\DatabaseConnection.cs`, provided connection and sample queries, MySql.Data NuGet package)
 
 - Menu: `SELECT package_name FROM package_tbl`; each package's code, category, price and inclusions come from `meals.txt` by name.
-- Orders: `INSERT INTO transactions_tbl (package_name, transaction_date)`, one row per meal, all saved in one database transaction.
+- Orders: `INSERT INTO transactions_tbl (package_name, transaction_date, customer_name)`, one row per meal, `customer_name` = `Cuison, Dizon, Flores, I.`, all saved in one database transaction.
 - The Queue Monitor still reads `transactions.txt`, because `transactions_tbl` has no order number or status.
 - If the server cannot be reached, the menu comes from `meals.txt` and orders are saved to `transactions.txt` only.
