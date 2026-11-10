@@ -1,0 +1,14 @@
+# Package meals. One meal per line: Code|Category|Name|Price|Inclusions
+Code|Category|Name|Price|Inclusions
+C1|Chicken Meals|1pc Chicken Meal|105|1pc Chicken, Rice, Drink
+C2|Chicken Meals|2pc Chicken Meal|175|2pc Chicken, Rice, Drink
+C3|Chicken Meals|Chicken & Spaghetti Meal|160|1pc Chicken, Spaghetti, Drink
+S1|Spaghetti Meals|Spaghetti Meal|85|Spaghetti, Drink
+S2|Spaghetti Meals|Spaghetti & Burger Meal|119|Spaghetti, Burger, Drink
+S3|Spaghetti Meals|Spaghetti & Fries Meal|115|Spaghetti, Fries, Drink
+B1|Burger Meals|Burger Meal|99|Burger, Fries, Drink
+B2|Burger Meals|Cheeseburger Meal|115|Cheeseburger, Fries, Drink
+B3|Burger Meals|Burger Steak Meal|110|2pc Burger Steak, Rice, Drink
+F1|Family Meals|Family Bucket|599|6pc Chicken, 6 Rice, Gravy
+F2|Family Meals|Family Bundle|899|6pc Chicken, Spaghetti Pan, 6 Drinks
+F3|Family Meals|Spaghetti Family Pan|399|Spaghetti Pan, Garlic Bread
