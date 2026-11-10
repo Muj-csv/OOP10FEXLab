@@ -44,6 +44,9 @@
     <Compile Include="Data\MealRepository.cs" />
     <Compile Include="Data\TransactionRepository.cs" />
     <Compile Include="UI\Theme.cs" />
+    <Compile Include="UI\RoundedPanel.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="UI\MealCard.cs">
       <SubType>Component</SubType>
     </Compile>

@@ -37,7 +37,8 @@ namespace OOP10FEXLab.UI
             Text = "Kiosk - " + Theme.StoreName;
             Size = new Size(1280, 800);
             StartPosition = FormStartPosition.CenterScreen;
-            BackColor = Theme.Background;
+            BackColor = Theme.Cream;
+            ForeColor = Theme.Text;
             Font = Theme.Font(10f);
 
             BuildLayout();
@@ -51,46 +52,50 @@ namespace OOP10FEXLab.UI
 
         private void BuildLayout()
         {
-            // Header
-            Panel header = new Panel { Dock = DockStyle.Top, Height = 64, BackColor = Theme.Dark };
-            header.Controls.Add(new Label { Text = Theme.StoreName, Font = Theme.Font(20f, FontStyle.Bold), ForeColor = Color.White, AutoSize = true, Location = new Point(20, 14) });
-            diningLabel = new Label { Dock = DockStyle.Right, Width = 220, Font = Theme.Font(13f, FontStyle.Bold), ForeColor = Color.White, TextAlign = ContentAlignment.MiddleCenter };
+            // Header: red band with the store name in yellow, and a thin yellow stripe under it
+            Panel header = new Panel { Dock = DockStyle.Top, Height = 76, BackColor = Theme.Red };
+            header.Controls.Add(new Label { Text = Theme.StoreName, Font = Theme.BrandFont(26f), ForeColor = Theme.Yellow, AutoSize = true, Location = new Point(22, 12), UseMnemonic = false });
+            diningLabel = new Label { Dock = DockStyle.Right, Width = 220, Font = Theme.Font(14f, FontStyle.Bold), ForeColor = Color.White, TextAlign = ContentAlignment.MiddleCenter };
             header.Controls.Add(diningLabel);
+            Panel headerStripe = new Panel { Dock = DockStyle.Top, Height = 6, BackColor = Theme.Yellow };
 
             // Footer: Cancel Order | Order Total | Review & Pay
-            Panel footer = new Panel { Dock = DockStyle.Bottom, Height = 72, BackColor = Color.White, Padding = new Padding(12) };
-            Button cancelButton = Theme.MakeButton("CANCEL ORDER", Color.White, Theme.Text);
+            Panel footer = new Panel { Dock = DockStyle.Bottom, Height = 78, BackColor = Color.White, Padding = new Padding(14, 12, 14, 12) };
+            Button cancelButton = Theme.MakeButton("CANCEL ORDER", Color.White, Theme.Red);
             cancelButton.Dock = DockStyle.Left;
-            cancelButton.Width = 180;
+            cancelButton.Width = 190;
             cancelButton.Click += (s, e) => CancelOrder();
 
-            payButton = Theme.MakeButton("REVIEW & PAY", Theme.Dark, Color.White, 13f);
+            payButton = Theme.MakeButton("REVIEW & PAY  ›", Theme.Red, Color.White, 14f);
             payButton.Dock = DockStyle.Right;
-            payButton.Width = 240;
+            payButton.Width = 260;
             payButton.Click += (s, e) => ReviewAndPay();
 
-            totalLabel = new Label { Dock = DockStyle.Fill, Font = Theme.Font(16f, FontStyle.Bold), TextAlign = ContentAlignment.MiddleRight, Padding = new Padding(0, 0, 20, 0) };
+            totalLabel = new Label { Dock = DockStyle.Fill, Font = Theme.Font(17f, FontStyle.Bold), ForeColor = Theme.Text, TextAlign = ContentAlignment.MiddleRight, Padding = new Padding(0, 0, 22, 0) };
             footer.Controls.Add(totalLabel);
             footer.Controls.Add(cancelButton);
             footer.Controls.Add(payButton);
+            Panel footerStripe = new Panel { Dock = DockStyle.Bottom, Height = 4, BackColor = Theme.Yellow };
 
             // Left: categories
-            categoryPanel = new FlowLayoutPanel { Dock = DockStyle.Left, Width = 180, BackColor = Color.White, FlowDirection = FlowDirection.TopDown, WrapContents = false, Padding = new Padding(10) };
+            categoryPanel = new FlowLayoutPanel { Dock = DockStyle.Left, Width = 190, BackColor = Color.White, FlowDirection = FlowDirection.TopDown, WrapContents = false, Padding = new Padding(12) };
 
             // Right: My Order
-            Panel orderBox = new Panel { Dock = DockStyle.Right, Width = 320, BackColor = Color.White, Padding = new Padding(12) };
+            Panel orderBox = new Panel { Dock = DockStyle.Right, Width = 330, BackColor = Color.White, Padding = new Padding(14) };
             orderPanel = new FlowLayoutPanel { Dock = DockStyle.Fill, FlowDirection = FlowDirection.TopDown, WrapContents = false, AutoScroll = true };
             orderBox.Controls.Add(orderPanel);
-            orderBox.Controls.Add(new Label { Text = "MY ORDER", Dock = DockStyle.Top, Height = 36, Font = Theme.Font(14f, FontStyle.Bold) });
+            orderBox.Controls.Add(new Label { Text = "MY ORDER", Dock = DockStyle.Top, Height = 40, Font = Theme.Font(15f, FontStyle.Bold), ForeColor = Theme.Red });
 
-            // Center: meal tiles
-            mealPanel = new FlowLayoutPanel { Dock = DockStyle.Fill, AutoScroll = true, Padding = new Padding(10) };
+            // Center: meal tiles on the cream background
+            mealPanel = new FlowLayoutPanel { Dock = DockStyle.Fill, AutoScroll = true, Padding = new Padding(12), BackColor = Theme.Cream };
 
             // Docking lays out the last-added control first, so header/footer go in last.
             Controls.Add(mealPanel);
             Controls.Add(orderBox);
             Controls.Add(categoryPanel);
+            Controls.Add(footerStripe);
             Controls.Add(footer);
+            Controls.Add(headerStripe);
             Controls.Add(header);
         }
 
@@ -101,22 +106,25 @@ namespace OOP10FEXLab.UI
                 Location = Point.Empty,
                 Size = ClientSize,
                 Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right,
-                BackColor = Theme.Dark
+                BackColor = Theme.Red
             };
 
-            // 3 rows: store name, question, the two buttons (centered)
-            TableLayoutPanel layout = new TableLayoutPanel { Dock = DockStyle.Fill, ColumnCount = 1, RowCount = 3 };
-            layout.RowStyles.Add(new RowStyle(SizeType.Percent, 45));
+            // 4 rows: store name, greeting, question, the two buttons (centered)
+            TableLayoutPanel layout = new TableLayoutPanel { Dock = DockStyle.Fill, ColumnCount = 1, RowCount = 4 };
+            layout.RowStyles.Add(new RowStyle(SizeType.Percent, 40));
             layout.RowStyles.Add(new RowStyle(SizeType.Absolute, 60));
-            layout.RowStyles.Add(new RowStyle(SizeType.Percent, 55));
+            layout.RowStyles.Add(new RowStyle(SizeType.Absolute, 60));
+            layout.RowStyles.Add(new RowStyle(SizeType.Percent, 60));
 
-            Label title = new Label { Text = Theme.StoreName, Font = Theme.Font(40f, FontStyle.Bold), ForeColor = Color.White, TextAlign = ContentAlignment.BottomCenter, Dock = DockStyle.Fill };
-            Label prompt = new Label { Text = "Where will you be eating today?", Font = Theme.Font(16f), ForeColor = Color.White, TextAlign = ContentAlignment.MiddleCenter, Dock = DockStyle.Fill };
+            Label title = new Label { Text = Theme.StoreName, Font = Theme.BrandFont(60f), ForeColor = Theme.Yellow, TextAlign = ContentAlignment.BottomCenter, Dock = DockStyle.Fill, UseMnemonic = false };
+            Label hello = new Label { Text = "Hello! What would you like to order?", Font = Theme.Font(22f, FontStyle.Bold), ForeColor = Color.White, TextAlign = ContentAlignment.MiddleCenter, Dock = DockStyle.Fill };
+            Label prompt = new Label { Text = "Where will you be eating today?", Font = Theme.Font(15f), ForeColor = Theme.YellowLight, TextAlign = ContentAlignment.MiddleCenter, Dock = DockStyle.Fill };
 
-            FlowLayoutPanel choices = new FlowLayoutPanel { Anchor = AnchorStyles.Top, AutoSize = true, WrapContents = false };
-            Button dineIn = Theme.MakeButton("DINE IN", Color.White, Theme.Text, 20f);
-            Button takeOut = Theme.MakeButton("TAKE OUT", Theme.Silver, Theme.Text, 20f);
-            dineIn.Size = takeOut.Size = new Size(280, 120);
+            FlowLayoutPanel choices = new FlowLayoutPanel { Anchor = AnchorStyles.Top, AutoSize = true, WrapContents = false, Margin = new Padding(0, 20, 0, 0) };
+            Button dineIn = Theme.MakeButton("DINE IN", Color.White, Theme.Red, 22f);
+            Button takeOut = Theme.MakeButton("TAKE OUT", Theme.Yellow, Theme.Red, 22f);
+            dineIn.FlatAppearance.BorderColor = Color.White; // no red outline on the red screen
+            dineIn.Size = takeOut.Size = new Size(280, 130);
             dineIn.Margin = takeOut.Margin = new Padding(20, 0, 20, 0);
             dineIn.Click += (s, e) => StartOrder(DiningOption.DineIn);
             takeOut.Click += (s, e) => StartOrder(DiningOption.TakeOut);
@@ -124,8 +132,9 @@ namespace OOP10FEXLab.UI
             choices.Controls.Add(takeOut);
 
             layout.Controls.Add(title, 0, 0);
-            layout.Controls.Add(prompt, 0, 1);
-            layout.Controls.Add(choices, 0, 2);
+            layout.Controls.Add(hello, 0, 1);
+            layout.Controls.Add(prompt, 0, 2);
+            layout.Controls.Add(choices, 0, 3);
             welcomePanel.Controls.Add(layout);
 
             Controls.Add(welcomePanel);
@@ -149,8 +158,10 @@ namespace OOP10FEXLab.UI
             foreach (string category in new[] { AllMeals }.Concat(meals.Select(m => m.Category).Distinct()))
             {
                 Button button = Theme.MakeButton(category, Color.White, Theme.Text, 10.5f);
-                button.Size = new Size(150, 52);
+                button.Size = new Size(160, 56);
+                button.Margin = new Padding(0, 0, 0, 8);
                 button.TextAlign = ContentAlignment.MiddleLeft;
+                button.Padding = new Padding(8, 0, 0, 0);
                 string selected = category;
                 button.Click += (s, e) => ShowMeals(selected);
                 categoryPanel.Controls.Add(button);
@@ -164,9 +175,12 @@ namespace OOP10FEXLab.UI
         {
             foreach (Button button in categoryPanel.Controls.OfType<Button>())
             {
+                // Selected category: red with white text (like the highlighted tile in the design).
                 bool active = button.Text == category;
-                button.BackColor = active ? Theme.Dark : Color.White;
+                button.BackColor = active ? Theme.Red : Color.White;
                 button.ForeColor = active ? Color.White : Theme.Text;
+                button.FlatAppearance.BorderColor = active ? Theme.Red : Theme.Border;
+                button.FlatAppearance.MouseOverBackColor = active ? Theme.Darken(Theme.Red) : Theme.Hover;
             }
 
             mealPanel.Controls.Clear();
@@ -186,17 +200,17 @@ namespace OOP10FEXLab.UI
 
             foreach (OrderItem item in cart.Items)
             {
-                Panel row = new Panel { Size = new Size(280, 64), Margin = new Padding(0, 0, 0, 6), BackColor = Theme.Background };
-                row.Controls.Add(new Label { Text = item.Name, Location = new Point(8, 6), Size = new Size(180, 22), Font = Theme.Font(9.5f, FontStyle.Bold), UseMnemonic = false });
-                row.Controls.Add(new Label { Text = "₱" + item.Subtotal.ToString("N2"), Location = new Point(190, 6), Size = new Size(84, 22), TextAlign = ContentAlignment.TopRight, Font = Theme.Font(9.5f, FontStyle.Bold) });
+                RoundedPanel row = new RoundedPanel { Size = new Size(286, 66), Margin = new Padding(0, 0, 0, 8), BackColor = Theme.Cream, Radius = 10 };
+                row.Controls.Add(new Label { Text = item.Name, Location = new Point(10, 7), Size = new Size(180, 22), Font = Theme.Font(9.5f, FontStyle.Bold), UseMnemonic = false, AutoEllipsis = true });
+                row.Controls.Add(new Label { Text = "₱" + item.Subtotal.ToString("N2"), Location = new Point(192, 7), Size = new Size(86, 22), TextAlign = ContentAlignment.TopRight, Font = Theme.Font(9.5f, FontStyle.Bold), ForeColor = Theme.Red });
 
-                Label minus = SmallButton("-", 8);
+                Label minus = SmallButton("-", 10);
                 string code = item.Code;
                 minus.Click += (s, e) => cart.Decrease(code);
 
-                Label quantity = new Label { Text = item.Quantity.ToString(), Location = new Point(40, 32), Size = new Size(34, 26), TextAlign = ContentAlignment.MiddleCenter, Font = Theme.Font(11f, FontStyle.Bold) };
+                Label quantity = new Label { Text = item.Quantity.ToString(), Location = new Point(42, 33), Size = new Size(34, 26), TextAlign = ContentAlignment.MiddleCenter, Font = Theme.Font(11f, FontStyle.Bold) };
 
-                Label plus = SmallButton("+", 76);
+                Label plus = SmallButton("+", 78);
                 Meal meal = meals.First(m => m.Code == code);
                 plus.Click += (s, e) => cart.Add(meal);
 
@@ -208,6 +222,7 @@ namespace OOP10FEXLab.UI
 
             totalLabel.Text = "Order Total:  ₱" + cart.Total.ToString("N2");
             payButton.Enabled = !cart.IsEmpty;
+            payButton.BackColor = cart.IsEmpty ? Theme.Disabled : Theme.Red; // grey until something is in the order
         }
 
         // Small square "-" / "+" control (a Label draws the sign reliably at this size).
@@ -216,9 +231,9 @@ namespace OOP10FEXLab.UI
             return new Label
             {
                 Text = text,
-                Location = new Point(x, 32),
+                Location = new Point(x, 33),
                 Size = new Size(30, 26),
-                BackColor = Theme.Dark,
+                BackColor = Theme.Red,
                 ForeColor = Color.White,
                 Font = Theme.Font(12f, FontStyle.Bold),
                 TextAlign = ContentAlignment.MiddleCenter,

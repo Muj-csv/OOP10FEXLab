@@ -19,8 +19,9 @@ namespace OOP10FEXLab.UI
             MinimizeBox = false;
             BackColor = Color.White;
 
-            Label caption = new Label { Text = "YOUR ORDER NUMBER", Dock = DockStyle.Top, Height = 48, Font = Theme.Font(12f, FontStyle.Bold), ForeColor = Color.White, BackColor = Theme.Dark, TextAlign = ContentAlignment.BottomCenter };
-            Label number = new Label { Text = order.OrderNumber.ToString(), Dock = DockStyle.Top, Height = 120, Font = Theme.Font(54f, FontStyle.Bold), ForeColor = Color.White, BackColor = Theme.Dark, TextAlign = ContentAlignment.MiddleCenter };
+            Label caption = new Label { Text = "YOUR ORDER NUMBER", Dock = DockStyle.Top, Height = 48, Font = Theme.Font(12f, FontStyle.Bold), ForeColor = Color.White, BackColor = Theme.Red, TextAlign = ContentAlignment.BottomCenter };
+            Label number = new Label { Text = order.OrderNumber.ToString(), Dock = DockStyle.Top, Height = 120, Font = Theme.Font(58f, FontStyle.Bold), ForeColor = Theme.Yellow, BackColor = Theme.Red, TextAlign = ContentAlignment.MiddleCenter };
+            Panel stripe = new Panel { Dock = DockStyle.Top, Height = 6, BackColor = Theme.Yellow };
 
             TextBox slip = new TextBox
             {
@@ -29,18 +30,20 @@ namespace OOP10FEXLab.UI
                 TabStop = false,
                 Dock = DockStyle.Fill,
                 BorderStyle = BorderStyle.None,
-                BackColor = Theme.Background,
+                BackColor = Theme.Cream,
+                ForeColor = Theme.Text,
                 Font = new Font("Consolas", 10f),
                 Text = BuildSlip(order)
             };
 
-            Button done = Theme.MakeButton("DONE", Theme.Dark, Color.White, 13f);
+            Button done = Theme.MakeButton("DONE", Theme.Red, Color.White, 13f);
             done.Dock = DockStyle.Bottom;
             done.Height = 52;
             done.DialogResult = DialogResult.OK;
 
             Controls.Add(slip);
             Controls.Add(done);
+            Controls.Add(stripe);
             Controls.Add(number);
             Controls.Add(caption);
 
@@ -65,6 +68,8 @@ namespace OOP10FEXLab.UI
             sb.AppendLine();
             sb.AppendLine("Please pay at the counter and watch");
             sb.AppendLine("the Queue Monitor for your number.");
+            sb.AppendLine();
+            sb.AppendLine(Theme.ThankYou);
             return sb.ToString();
         }
     }

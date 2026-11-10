@@ -66,11 +66,11 @@ Order numbers start at 1001 each day. Status: `Preparing`, `NowServing`, `Claime
 | `Models` | `Meal`, `Order`, `OrderItem` | Data objects |
 | `Services` | `Cart` | The customer's current order |
 | `Data` | `MealRepository`, `TransactionRepository` | Read `meals.txt`; save/read `transactions.txt` |
-| `UI` | `KioskForm`, `CheckoutForm`, `ReceiptForm`, `QueueMonitorForm`, `MealCard`, `Theme` | Screens |
+| `UI` | `KioskForm`, `CheckoutForm`, `ReceiptForm`, `QueueMonitorForm`, `MealCard`, `RoundedPanel`, `Theme` | Screens |
 
-OOP used: **classes and objects**, **encapsulation** (`Cart` keeps its list private), **inheritance** (forms extend `Form`, `MealCard` extends `Panel`), **events** (`Cart.Changed`, `MealCard.AddClicked`).
+OOP used: **classes and objects**, **encapsulation** (`Cart` keeps its list private), **inheritance** (forms extend `Form`, `MealCard` extends `RoundedPanel`, which extends `Panel`), **events** (`Cart.Changed`, `MealCard.AddClicked`).
 
-Look: plain grey/silver template, `[STORE NAME]` placeholder, grey IMAGE boxes — all set in `UI\Theme.cs`.
+Look: red and yellow fast-food theme on a cream background, store name **AnDokiDoks**, rounded white cards, IMAGE placeholders where meal pictures go — all set in `UI\Theme.cs`.
 
 ## 8. Test checklist
 
