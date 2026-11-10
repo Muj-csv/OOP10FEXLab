@@ -1,0 +1,16 @@
+OOP10FEXLab - Final Laboratory Exam
+Object-Oriented Programming (Laboratory)
+
+Group Members:
+
+1. Ian Patrick A. Flores
+   Role   : Repository Owner, Team Lead, Backend
+   GitHub : https://github.com/Muj-csv
+
+2. Mary Princess Angel L. Dizon
+   Role   : UI/UX
+   GitHub : https://github.com/mpadzn
+
+3. Joey T. Cuison
+   Role   : Frontend
+   GitHub : https://github.com/joeycuison333-stack
