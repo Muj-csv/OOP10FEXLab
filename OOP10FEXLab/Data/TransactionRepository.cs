@@ -74,25 +74,43 @@ namespace OOP10FEXLab.Data
         {
             string[] f = line.Split('|');
             int number;
+            DateTime date;
+            DiningOption dining;
+            OrderStatus status;
+
             if (f.Length < 6 || !int.TryParse(f[0], out number)) return null; // header or blank line
+
+            // A damaged line is skipped instead of crashing the Kiosk and the Queue Monitor.
+            if (!DateTime.TryParseExact(f[1], DateFormat, CultureInfo.InvariantCulture, DateTimeStyles.None, out date) ||
+                !Enum.TryParse(f[2], out dining) ||
+                !Enum.TryParse(f[3], out status))
+                return null;
 
             Order order = new Order
             {
                 OrderNumber = number,
-                OrderDate = DateTime.ParseExact(f[1], DateFormat, CultureInfo.InvariantCulture),
-                DiningOption = (DiningOption)Enum.Parse(typeof(DiningOption), f[2]),
-                Status = (OrderStatus)Enum.Parse(typeof(OrderStatus), f[3])
+                OrderDate = date,
+                DiningOption = dining,
+                Status = status
             };
 
             foreach (string part in f[5].Split(new[] { '~' }, StringSplitOptions.RemoveEmptyEntries))
             {
                 string[] p = part.Split('^');
+                decimal price;
+                int quantity;
+
+                if (p.Length < 4 ||
+                    !decimal.TryParse(p[2], NumberStyles.Number, CultureInfo.InvariantCulture, out price) ||
+                    !int.TryParse(p[3], out quantity))
+                    return null;
+
                 order.Items.Add(new OrderItem
                 {
                     Code = p[0],
                     Name = p[1],
-                    Price = decimal.Parse(p[2], CultureInfo.InvariantCulture),
-                    Quantity = int.Parse(p[3])
+                    Price = price,
+                    Quantity = quantity
                 });
             }
 
