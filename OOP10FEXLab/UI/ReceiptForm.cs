@@ -64,7 +64,7 @@ namespace OOP10FEXLab.UI
             sb.AppendLine("TOTAL".PadRight(28) + order.Total.ToString("N2").PadLeft(10));
             sb.AppendLine();
             sb.AppendLine("Please pay at the counter and watch");
-            sb.AppendLine("the Claim Monitor for your number.");
+            sb.AppendLine("the Queue Monitor for your number.");
             return sb.ToString();
         }
     }
