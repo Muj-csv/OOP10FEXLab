@@ -24,14 +24,17 @@ namespace OOP10FEXLab.Data
                 if (line.Trim() == "" || line.StartsWith("#") || line.StartsWith("Code|")) continue;
 
                 string[] f = line.Split('|');
-                if (f.Length < 5) continue;
+                decimal price;
+
+                // Skip a line with missing fields or a price that is not a number, instead of crashing the kiosk.
+                if (f.Length < 5 || !decimal.TryParse(f[3].Trim(), NumberStyles.Number, CultureInfo.InvariantCulture, out price)) continue;
 
                 meals.Add(new Meal
                 {
                     Code = f[0].Trim(),
                     Category = f[1].Trim(),
                     Name = f[2].Trim(),
-                    Price = decimal.Parse(f[3].Trim(), CultureInfo.InvariantCulture),
+                    Price = price,
                     Inclusions = f[4].Trim()
                 });
             }
