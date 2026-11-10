@@ -53,5 +53,5 @@ OOP10FEXLab/
 - **Screen layouts:** each screen has a `.Designer.cs` file, so it opens in the Visual Studio **Designer** (double-click `KioskForm.cs`, `CheckoutForm.cs`, `ReceiptForm.cs` or `QueueMonitorForm.cs`). Meal cards, category buttons, order rows and queue numbers come from the data, so they are added in code when the app runs.
 - **Database:** the instructor's MySQL server (`Data/DatabaseConnection.cs`, `172.16.24.11`, database `fastfoodDB`).
   - **Menu:** `SELECT package_name FROM package_tbl`. The Kiosk shows the packages found there, with their price, category and inclusions taken from `meals.txt` (same name). The Kiosk title shows `menu: database` or `menu: meals.txt`.
-  - **Orders:** **Place Order** inserts one row per meal into `transactions_tbl (package_name, transaction_date)`.
+  - **Orders:** **Place Order** inserts one row per meal into `transactions_tbl (package_name, transaction_date, customer_name)`, with `customer_name` = `Cuison, Dizon, Flores, I.` (our group).
   - **No connection** (for example at home): after 3 seconds the menu comes from `meals.txt`, and orders still save to `transactions.txt` with a warning.

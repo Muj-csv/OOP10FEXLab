@@ -20,6 +20,9 @@ namespace OOP10FEXLab.Data
         private const string Header = "OrderNo|DateTime|DiningOption|Status|Total|Items";
         private const string DateFormat = "yyyy-MM-dd HH:mm:ss";
 
+        /// <summary>Saved as customer_name on every order, so our group's rows can be found in the shared table.</summary>
+        public const string CustomerName = "Cuison, Dizon, Flores, I.";
+
         private readonly string filePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Data", "transactions.txt");
         private readonly DatabaseConnection database = DatabaseConnection.CreateDefault();
 
@@ -33,7 +36,8 @@ namespace OOP10FEXLab.Data
 
         /// <summary>
         /// Instructor's sample insert: one row in transactions_tbl per meal ordered
-        /// (2 x 1pc Chicken Meal = 2 rows). All rows are saved, or none.
+        /// (2 x 1pc Chicken Meal = 2 rows), with our group's names as customer_name.
+        /// All rows are saved, or none.
         /// </summary>
         public void SaveToDatabase(Order order)
         {
@@ -43,8 +47,8 @@ namespace OOP10FEXLab.Data
                 using (MySqlTransaction tran = conn.BeginTransaction())
                 {
                     string sql = "INSERT INTO transactions_tbl " +
-                                 "(package_name, transaction_date) " +
-                                 "VALUES (@pkg, @date)";
+                                 "(package_name, transaction_date, customer_name) " +
+                                 "VALUES (@pkg, @date, @customer)";
 
                     foreach (OrderItem item in order.Items)
                     {
@@ -54,6 +58,7 @@ namespace OOP10FEXLab.Data
                             {
                                 cmd.Parameters.AddWithValue("@pkg", item.Name);
                                 cmd.Parameters.AddWithValue("@date", order.OrderDate);
+                                cmd.Parameters.AddWithValue("@customer", CustomerName);
                                 cmd.ExecuteNonQuery();
                             }
                         }
