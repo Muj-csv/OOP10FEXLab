@@ -44,10 +44,10 @@ OOP10FEXLab/
    │  ├─ meals.txt               package meals (edit to change the menu)
    │  ├─ MealRepository.cs       reads meals.txt
    │  └─ TransactionRepository.cs  saves orders to transactions.txt
-   └─ UI/                        KioskForm, CheckoutForm, ReceiptForm, QueueMonitorForm, MealCard, Theme
+   └─ UI/                        KioskForm, CheckoutForm, ReceiptForm, QueueMonitorForm, MealCard, RoundedPanel, Theme
 ```
 
 - **Menu:** edit `Data/meals.txt` — `Code|Category|Name|Price|Inclusions`.
 - **Transaction record:** `bin/Debug/Data/transactions.txt`, created on the first order.
-- **Store name and colors:** `UI/Theme.cs`.
+- **Store name and colors:** `UI/Theme.cs` (store name **AnDokiDoks**, red and yellow theme).
 - **Database:** put the instructor's connection/query code inside `MealRepository` and `TransactionRepository`.
